@@ -1,0 +1,14 @@
+<?php
+function fausto_after_wcmp_role_updated(  $user_id, $new_role, $old_role ) {
+  $wcmp_roles = ['dc_pending_vendor','dc_rejected_vendor','dc_vendor'];
+  $user = new WP_User($user_id);
+  foreach($old_role as $role) {
+    if(!in_array($role, $wcmp_roles)) {
+      //If the current role is a WcMP one don't add it
+      $user->add_role($role);
+    }
+  }
+}
+//The hook triggered when wcmp changes any role
+add_action('wcmp_set_user_role','fausto_after_wcmp_role_updated',10,3);
+?>
